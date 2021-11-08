@@ -1,8 +1,8 @@
 export interface ISearchRoutes extends Record<string, unknown> {
     departureDate: Date;
     tariffs?: string;
-    fromLocationId?: number;
+    fromLocationId?: string;
     fromLocationType?: string;
-    toLocationId?: number;
+    toLocationId?: string;
     toLocationType?: string;
 }

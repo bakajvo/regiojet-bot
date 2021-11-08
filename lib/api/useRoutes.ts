@@ -1,14 +1,13 @@
-import { useToast } from '@chakra-ui/react';
+import {useToast} from '@chakra-ui/react';
 import useSWR from 'swr';
-import { axiosFetcher } from '../axiosFetcher';
-import { ISearchRoutes } from '../model/ISearchRoutes';
+import {axiosFetcher} from '../axiosFetcher';
+import isEmpty from 'lodash/isEmpty';
+import {IRoutes} from "../model/IRoutes";
 
-const useRoutes = (searchRoutes: ISearchRoutes) => {
-    console.log('searchRoutes', searchRoutes);
+const useRoutes = (searchRoutes: Record<string, string>) => {
     const toast = useToast();
-    const { data, error } = useSWR(`/routes/search/simple`, url => axiosFetcher(url, {
-        params: searchRoutes
-    }));
+    const usp = new URLSearchParams(searchRoutes);
+    const { data, error } = useSWR<IRoutes>(!isEmpty(searchRoutes) ? `/routes/search/simple?${usp}` : null, url => axiosFetcher(url));
 
     if (error) {
         toast({
