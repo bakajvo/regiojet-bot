@@ -20,9 +20,9 @@ const SearchRoutes: React.FC = () => {
     const formik = useFormik<ISearchRoutes>({
         initialValues: {
             departureDate: new Date(),
-            fromLocationId: 17554000,
+            fromLocationId: '17554000',
             fromLocationType: 'CITY',
-            toLocationId: 10202003,
+            toLocationId: '10202003',
             toLocationType: 'CITY',
             tariffs: 'REGULAR',
         },
