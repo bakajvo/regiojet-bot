@@ -2,15 +2,16 @@ import {
     Box, Button, Flex, FormControl,
     FormLabel, Heading, Select, Stack, useColorModeValue
 } from '@chakra-ui/react';
-import { useFormik } from 'formik';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import {useFormik} from 'formik';
+import {useRouter} from 'next/router';
+import React, {useMemo} from 'react';
 import useConstants from '../lib/api/useConstants';
-import { ICountry } from '../lib/model/ICountry';
-import { IOption } from '../lib/model/IOption';
-import { ISearchRoutes } from '../lib/model/ISearchRoutes';
-import { ITariff } from '../lib/model/ITariff';
+import {ICountry} from '../lib/model/ICountry';
+import {IOption} from '../lib/model/IOption';
+import {ISearchRoutes} from '../lib/model/ISearchRoutes';
+import {ITariff} from '../lib/model/ITariff';
+import DatePicker from "./ui/datepicker/DatePicker";
+import cs from "date-fns/locale/cs";
 
 const SearchRoutes: React.FC = () => {
     const router = useRouter();
@@ -71,40 +72,47 @@ const SearchRoutes: React.FC = () => {
                     boxShadow={'lg'}
                     p={8}>
                     <Stack spacing={4}>
-                        <FormControl id="from">
+                        <FormControl id="departureDate">
+                            <FormLabel>Kdy</FormLabel>
+                            <DatePicker locale={cs} dateFormat={'dd. MM. yyyy'} selected={formik.values.departureDate} onChange={date => formik.setFieldValue('departureDate', date)}/>
+                        </FormControl>
+                        <FormControl id="fromLocationId">
                             <FormLabel>Odkud</FormLabel>
                             <Select id="fromLocationId"
-                                name="fromLocationId"
-                                onChange={formik.handleChange}
-                                value={formik.values.fromLocationId}>
-                                {convertLocationsToOptions.map((location, index) => <option key={index} value={location.value}>{location.label}</option>)}
+                                    name="fromLocationId"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.fromLocationId}>
+                                {convertLocationsToOptions.map((location, index) => <option key={index}
+                                                                                            value={location.value}>{location.label}</option>)}
                             </Select>
                         </FormControl>
-                        <FormControl id="to">
+                        <FormControl id="toLocationId">
                             <FormLabel>Kam</FormLabel>
                             <Select id="toLocationId"
-                                name="toLocationId"
-                                onChange={formik.handleChange}
-                                value={formik.values.toLocationId}>
-                                {convertLocationsToOptions.map((location, index) => <option key={index} value={location.value}>{location.label}</option>)}
+                                    name="toLocationId"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.toLocationId}>
+                                {convertLocationsToOptions.map((location, index) => <option key={index}
+                                                                                            value={location.value}>{location.label}</option>)}
                             </Select>
                         </FormControl>
-                        <FormControl id="tariff">
+                        <FormControl id="tariffs">
                             <FormLabel>Tarif</FormLabel>
                             <Select id="tariffs"
-                                name="tariffs"
-                                onChange={formik.handleChange}
-                                value={formik.values.tariffs}>
-                                {(tariffs.data || []).map((tariff, index) => <option key={index} value={tariff.key}>{tariff.value}</option>)}
+                                    name="tariffs"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.tariffs}>
+                                {(tariffs.data || []).map((tariff, index) => <option key={index}
+                                                                                     value={tariff.key}>{tariff.value}</option>)}
                             </Select>
                         </FormControl>
                         <Stack spacing={10}>
                             <Button onClick={formik.submitForm}
-                                bg={'blue.400'}
-                                color={'white'}
-                                _hover={{
-                                    bg: 'blue.500',
-                                }}>
+                                    bg={'blue.400'}
+                                    color={'white'}
+                                    _hover={{
+                                        bg: 'blue.500',
+                                    }}>
                                 Hledat
                             </Button>
                         </Stack>
