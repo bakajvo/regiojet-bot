@@ -27,7 +27,6 @@ const SearchRoutes: React.FC = () => {
             tariffs: 'REGULAR',
         },
         onSubmit: values => {
-            console.log('Value', values);
             router.push({
                 pathname: '/routes',
                 query: {

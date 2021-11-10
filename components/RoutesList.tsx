@@ -12,7 +12,7 @@ interface RoutesListProps {
 
 const RoutesList: React.FC<RoutesListProps> = (props) => {
     const {routes, fromLocationId, toLocationId} = props;
-    const {playing, toggle} = useAudio('http://milujipraci.cz/sfx/extra/nevim-jak.mp3');
+    const {playing, toggle} = useAudio('Hallelujah.mp3');
 
     const [checking, setChecking] = useState<Array<boolean>>(new Array(routes.routes.length).fill(false));
 
