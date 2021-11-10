@@ -7,7 +7,14 @@ import {IRoutes} from "../model/IRoutes";
 const useRoutes = (searchRoutes: Record<string, string>) => {
     const toast = useToast();
     const usp = new URLSearchParams(searchRoutes);
-    const { data, error } = useSWR<IRoutes>(!isEmpty(searchRoutes) ? `/routes/search/simple?${usp}` : null, url => axiosFetcher(url));
+    const {
+        data,
+        error
+    } = useSWR<IRoutes>(!isEmpty(searchRoutes) ? `/routes/search/simple?${usp}` : null, axiosFetcher,
+        {
+            refreshInterval: 10000,
+            refreshWhenHidden: true,
+        });
 
     if (error) {
         toast({

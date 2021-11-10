@@ -1,33 +1,28 @@
-import React from "react";
-import {
-    Badge,
-    Button,
-    Checkbox,
-    Flex,
-    Heading,
-    Stack,
-    Table,
-    Tbody,
-    Td,
-    Text,
-    Tr,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import React, {useEffect, useState} from "react";
+import {Badge, Checkbox, Flex, Heading, Stack, Table, Tbody, Td, Text, Tr, useColorModeValue,} from '@chakra-ui/react';
 import {IRoutes} from "../lib/model/IRoutes";
+import useAudio from "../lib/hooks/useAudio";
 
 interface RoutesListProps {
-    routes?: IRoutes;
+    routes: IRoutes;
     fromLocationId: string;
     toLocationId: string;
     departureDate: string;
 }
 
 const RoutesList: React.FC<RoutesListProps> = (props) => {
-    const {routes, fromLocationId, toLocationId, departureDate} = props;
+    const {routes, fromLocationId, toLocationId} = props;
+    const {playing, toggle} = useAudio('http://milujipraci.cz/sfx/extra/nevim-jak.mp3');
 
-    if (!routes) {
-        return null;
-    }
+    const [checking, setChecking] = useState<Array<boolean>>(new Array(routes.routes.length).fill(false));
+
+    useEffect(() => {
+        routes.routes.forEach((route, index) => {
+            if (checking[index] && route.freeSeatsCount > 0 && !playing) {
+                toggle();
+            }
+        });
+    }, [routes, checking]);
 
     return (
         <Flex
@@ -72,27 +67,14 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                                     </Badge>
                                 </Td>
                                 <Td>
-                                    <Badge ml="1" fontSize="0.8em" colorScheme="green">
-                                        {route.creditPriceFrom}
-                                    </Badge>
-                                </Td>
-                                <Td>
-                                    <Checkbox/>
+                                    <Checkbox isChecked={checking[index]}
+                                              onChange={(e) => setChecking(prevState => prevState
+                                                  .map((elem, i) => i === index ? e.target.checked : elem))}/>
                                 </Td>
                             </Tr>
                         )}
                     </Tbody>
                 </Table>
-                <Stack spacing={6}>
-                    <Button
-                        bg={'blue.400'}
-                        color={'white'}
-                        _hover={{
-                            bg: 'blue.500',
-                        }}>
-                        Hlídat
-                    </Button>
-                </Stack>
             </Stack>
         </Flex>
     );

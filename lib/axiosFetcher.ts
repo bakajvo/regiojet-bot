@@ -4,7 +4,7 @@ const instance = axios.create({
     baseURL: 'https://brn-ybus-pubapi.sa.cz/restapi',
     headers: {
         'X-Lang': 'cs',
-        'X-Currency': 'CZK'
+        'X-Currency': 'CZK',
     }
 });
 
