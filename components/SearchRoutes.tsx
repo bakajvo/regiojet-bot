@@ -74,7 +74,8 @@ const SearchRoutes: React.FC = () => {
                     <Stack spacing={4}>
                         <FormControl id="departureDate">
                             <FormLabel>Kdy</FormLabel>
-                            <DatePicker locale={cs} dateFormat={'dd. MM. yyyy'} selected={formik.values.departureDate} onChange={date => formik.setFieldValue('departureDate', date)}/>
+                            <DatePicker locale={cs} dateFormat={'dd. MM. yyyy'} selected={formik.values.departureDate}
+                                        onChange={date => formik.setFieldValue('departureDate', date)}/>
                         </FormControl>
                         <FormControl id="fromLocationId">
                             <FormLabel>Odkud</FormLabel>
