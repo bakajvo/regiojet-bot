@@ -1,10 +1,13 @@
-import { useToast } from '@chakra-ui/react';
+import {useToast} from '@chakra-ui/react';
 import useSWR from 'swr';
-import { axiosFetcher } from '../axiosFetcher';
+import {axiosFetcher} from '../axiosFetcher';
 
-const useConstants = <Data = any, Error = any>(type: string) => {
+const useConstants = <Data = any, Result = any>(type: string, mapper?: (data: Data) => Result): {
+    data?: Data | Result;
+    isLoading: boolean;
+} => {
     const toast = useToast();
-    const { data, error } = useSWR<Data, Error>(`/consts/${type}`, axiosFetcher);
+    const {data, error} = useSWR<Data>(`/consts/${type}`, axiosFetcher);
 
     if (error) {
         toast({
@@ -16,7 +19,7 @@ const useConstants = <Data = any, Error = any>(type: string) => {
     }
 
     return {
-        data,
+        data: (mapper && data) ? mapper(data) : data,
         isLoading: !error && !data,
     }
 };

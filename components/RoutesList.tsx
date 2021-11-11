@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Badge, Checkbox, Flex, Heading, Stack, Table, Tbody, Td, Text, Tr, useColorModeValue,} from '@chakra-ui/react';
 import {IRoutes} from "../lib/model/IRoutes";
 import useAudio from "../lib/hooks/useAudio";
+import useConstants from "../lib/api/useConstants";
+import {ICountry} from "../lib/model/ICountry";
 
 interface RoutesListProps {
     routes: IRoutes;
@@ -14,6 +16,23 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
     const {routes, fromLocationId, toLocationId} = props;
     const {playing, toggle} = useAudio('Hallelujah.mp3');
 
+    const mapper = (data: Array<ICountry>): Record<string, string> => {
+        return data.map(country => country.cities).flat()
+            .map(city => [[{id: city.id, name: city.name}], city.stations
+                .map(station => {
+                    return {
+                        id: station.id,
+                        name: station.name,
+                    }
+                })].flat())
+            .flat().reduce<Record<string, string>>((previousValue, currentValue) => {
+                previousValue[currentValue.id] = currentValue.name;
+                return previousValue;
+            }, {});
+    }
+
+    const {data: locations} = useConstants<Array<ICountry>, Record<string, string>>('locations', mapper);
+
     const [checking, setChecking] = useState<Array<boolean>>(new Array(routes.routes.length).fill(false));
 
     useEffect(() => {
@@ -23,6 +42,10 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
             }
         });
     }, [routes, checking]);
+
+    if (!locations) {
+        return null;
+    }
 
     return (
         <Flex
@@ -40,7 +63,7 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                 p={6}
                 my={12}>
                 <Heading lineHeight={1.1} fontSize={{base: '2xl', md: '3xl'}} textAlign={'center'}>
-                    {`${fromLocationId} -> ${toLocationId}`}
+                    {`${locations[fromLocationId]} -> ${locations[toLocationId]}`}
                 </Heading>
                 <Text textAlign={'center'}
                       fontSize={{base: 'sm', sm: 'md'}}

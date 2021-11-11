@@ -15,8 +15,8 @@ import cs from "date-fns/locale/cs";
 
 const SearchRoutes: React.FC = () => {
     const router = useRouter();
-    const tariffs = useConstants<Array<ITariff>>('tariffs');
-    const locations = useConstants<Array<ICountry>>('locations');
+    const {data: tariffs} = useConstants<Array<ITariff>, Array<ITariff>>('tariffs');
+    const {data: locations} = useConstants<Array<ICountry>, Array<ICountry>>('locations');
 
     const formik = useFormik<ISearchRoutes>({
         initialValues: {
@@ -44,8 +44,8 @@ const SearchRoutes: React.FC = () => {
     });
 
     const convertLocationsToOptions = useMemo<Array<IOption>>(() => {
-        if (locations.data) {
-            const czCountry = locations.data.find(country => country.code === 'CZ');
+        if (locations) {
+            const czCountry = locations.find(country => country.code === 'CZ');
             return czCountry.cities.map<IOption>(city => {
                 return {
                     label: city.name,
@@ -54,7 +54,7 @@ const SearchRoutes: React.FC = () => {
             })
         }
         return [];
-    }, [locations.data]);
+    }, [locations]);
 
     return (
         <Flex
@@ -103,7 +103,7 @@ const SearchRoutes: React.FC = () => {
                                     name="tariffs"
                                     onChange={formik.handleChange}
                                     value={formik.values.tariffs}>
-                                {(tariffs.data || []).map((tariff, index) => <option key={index}
+                                {(tariffs || []).map((tariff, index) => <option key={index}
                                                                                      value={tariff.key}>{tariff.value}</option>)}
                             </Select>
                         </FormControl>
