@@ -32,7 +32,7 @@ interface RoutesListProps {
 
 const RoutesList: React.FC<RoutesListProps> = (props) => {
     const {routes, fromLocationId, toLocationId} = props;
-    // const {playing, toggle} = useAudio('Hallelujah.mp3');
+    const {playing, toggle} = useAudio('Hallelujah.mp3');
 
     const mapper = (data: Array<ICountry>): Record<string, string> => {
         return data
