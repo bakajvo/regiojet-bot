@@ -1,27 +1,26 @@
 import React, {useEffect, useState} from "react";
 import {
-    Icon,
-    VStack,
-    Checkbox,
-    Switch,
-    HStack,
-    Tag,
     Flex,
     Heading,
+    HStack,
+    Icon,
     Stack,
+    Switch,
     Table,
+    Tag,
     Tbody,
     Td,
     Text,
     Tr,
     useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
 import {ArrowForwardIcon} from '@chakra-ui/icons'
 import {IRoutes} from "../lib/model/IRoutes";
 import useAudio from "../lib/hooks/useAudio";
 import useConstants from "../lib/api/useConstants";
 import {ICountry} from "../lib/model/ICountry";
-import {FaUserTie, FaUsers, FaCoffee, FaBus, FaTrain, FaArrowRight} from 'react-icons/fa';
+import {FaArrowRight, FaBus, FaCoffee, FaTrain, FaUsers, FaUserTie} from 'react-icons/fa';
 
 interface RoutesListProps {
     routes: IRoutes;
@@ -32,7 +31,6 @@ interface RoutesListProps {
 
 const RoutesList: React.FC<RoutesListProps> = (props) => {
     const {routes, fromLocationId, toLocationId} = props;
-    const {playing, toggle} = useAudio('Hallelujah.mp3');
 
     const mapper = (data: Array<ICountry>): Record<string, string> => {
         return data
@@ -54,7 +52,7 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
     }
 
     const {data: locations} = useConstants<Array<ICountry>, Record<string, string>>('locations', mapper);
-
+    const {playing, toggle} = useAudio('Hallelujah.mp3');
     const [checking, setChecking] = useState<Array<boolean>>(new Array(routes.routes.length).fill(false));
 
     useEffect(() => {
@@ -64,10 +62,6 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
             }
         });
     }, [routes, checking]);
-
-    if (!locations) {
-        return null;
-    }
 
     return (
         <Flex
@@ -85,9 +79,9 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                 p={6}
                 my={12}>
                 <Heading lineHeight={1.1} fontSize={{base: '2xl', md: '3xl'}} textAlign={'center'}>
-                    {locations[fromLocationId]}
+                    {locations ? locations[fromLocationId] : null}
                     <ArrowForwardIcon/>
-                    {locations[toLocationId]}
+                    {locations ? locations[toLocationId] : null}
                 </Heading>
                 <Text textAlign={'center'}
                       fontSize={{base: 'sm', sm: 'md'}}
