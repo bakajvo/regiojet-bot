@@ -53,11 +53,11 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
 
     const {data: locations} = useConstants<Array<ICountry>, Record<string, string>>('locations', mapper);
     const {playing, toggle} = useAudio('Hallelujah.mp3');
-    const [checking, setChecking] = useState<Array<boolean>>(new Array(routes.routes.length).fill(false));
+    const [checking, setChecking] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
-        routes.routes.forEach((route, index) => {
-            if (checking[index] && route.freeSeatsCount > 0 && !playing) {
+        routes.routes.forEach((route) => {
+            if (checking[route.id] && route.freeSeatsCount > 0 && !playing) {
                 toggle();
             }
         });
@@ -129,9 +129,13 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                                     </HStack>
                                 </Td>
                                 <Td>
-                                    <Switch defaultChecked={checking[index]}
-                                            onChange={(e) => setChecking(prevState => prevState
-                                                .map((elem, i) => i === index ? e.target.checked : elem))}
+                                    <Switch defaultChecked={checking[route.id] || false}
+                                            onChange={(e) =>
+                                                setChecking({
+                                                    ...checking,
+                                                    [route.id]: e.target.checked
+                                                })
+                                            }
                                             id="email-alerts"/>
                                 </Td>
                             </Tr>
