@@ -1,17 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {
+    Box,
+    Center,
     Flex,
     Heading,
     HStack,
     Icon,
     Stack,
     Switch,
-    Table,
     Tag,
-    Tbody,
-    Td,
     Text,
-    Tr,
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
@@ -93,11 +91,11 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                       color={useColorModeValue('gray.800', 'gray.400')}>
                     {new Date(routes.routes[0].departureTime).toLocaleDateString()}
                 </Text>
-                <Table variant={"unstyled"}>
-                    <Tbody>
+                <Center>
+                    <Box>
                         {routes.routes.map((route, index) =>
-                            <Tr key={index}>
-                                <Td>
+                            <Flex key={index}>
+                                <Box>
                                     <VStack>
                                         <HStack spacing={4}>
                                             <Tag size={'md'} variant="solid" colorScheme="gray">
@@ -112,14 +110,14 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                                             {route.travelTime}
                                         </Tag>
                                     </VStack>
-                                </Td>
-                                <Td>
+                                </Box>
+                                <Box padding={4}>
                                     <HStack>
                                         <Icon as={FaUsers} color={route.freeSeatsCount > 0 ? 'green.500' : 'red.500'}/>
                                         <Text>{route.freeSeatsCount}</Text>
                                     </HStack>
-                                </Td>
-                                <Td>
+                                </Box>
+                                <Box minW={20} padding={4}>
                                     <HStack>
                                         {route.vehicleStandardKey === "FUN_RELAX_SELF_SERVICE" && <Icon as={FaCoffee}/>}
                                         {route.vehicleStandardKey === "DEUTSCHE_BAHN" && <Icon as={FaCoffee}/>}
@@ -127,8 +125,8 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                                         {route.vehicleTypes.includes('BUS') && <Icon as={FaBus}/>}
                                         {route.vehicleTypes.includes('TRAIN') && <Icon as={FaTrain}/>}
                                     </HStack>
-                                </Td>
-                                <Td>
+                                </Box>
+                                <Box padding={4}>
                                     <Switch defaultChecked={checking[route.id] || false}
                                             onChange={(e) =>
                                                 setChecking({
@@ -136,12 +134,13 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                                                     [route.id]: e.target.checked
                                                 })
                                             }
-                                            id="email-alerts"/>
-                                </Td>
-                            </Tr>
+                                            id="email-alerts"
+                                    />
+                                </Box>
+                            </Flex>
                         )}
-                    </Tbody>
-                </Table>
+                    </Box>
+                </Center>
             </Stack>
         </Flex>
     );
