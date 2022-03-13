@@ -127,7 +127,7 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                                     </HStack>
                                 </Box>
                                 <Box padding={4}>
-                                    <Switch defaultChecked={checking[route.id] || false}
+                                    <Switch checked={checking[route.id] || false}
                                             onChange={(e) =>
                                                 setChecking({
                                                     ...checking,
