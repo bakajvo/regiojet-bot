@@ -28,7 +28,7 @@ interface RoutesListProps {
 }
 
 const RoutesList: React.FC<RoutesListProps> = (props) => {
-    const { routes, fromLocationId, toLocationId } = props;
+    const { routes, fromLocationId, toLocationId, departureDate } = props;
 
     const mapper = (data: Array<ICountry>): Record<string, string> => {
         return data
@@ -91,7 +91,7 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
                 <Text textAlign={'center'}
                     fontSize={{ base: 'md', sm: 'xl' }}
                     color={useColorModeValue('gray.800', 'gray.400')}>
-                    {new Date(routes.routes[0].departureTime).toLocaleDateString()}
+                    {new Date(departureDate).toLocaleDateString()}
                 </Text>
                 <Center>
                     <Box>
