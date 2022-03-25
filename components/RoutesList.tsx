@@ -55,13 +55,11 @@ const RoutesList: React.FC<RoutesListProps> = (props) => {
 
     useEffect(() => {
         routes.routes.forEach((route) => {
-            if (checking[route.id] && route.freeSeatsCount > 0 && !playing) {
+            if (checking.includes(route.id) && route.freeSeatsCount > 0 && !playing) {
                 toggle();
             }
         });
     }, [routes, checking]);
-
-    console.log('routes', routes, 'checking', checking)
 
     return (
         <Flex
